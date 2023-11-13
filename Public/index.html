@@ -1,0 +1,96 @@
+<!-- public/index.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Productos</title>
+    <link rel="stylesheet" href="./estilos/style.css">
+
+</head>
+<body>
+    <div>
+        <a href="api/resto/productosP"><button>Ir a la página de carga de productos</button></a>
+    </div>
+
+    <div class="container" id="productos-container">
+        <!-- Aquí se insertarán los productos dinámicamente -->
+    </div>
+
+    <script>
+        // Lista de productos seleccionados
+        const listaProductos = [];
+
+        // Función para agregar un producto a la lista
+        function agregarProducto(producto) {
+            // Verificar si el producto ya está en la lista y no se ha alcanzado el límite
+            const productoExistente = listaProductos.find(item => item.nombre === producto.nombre);
+            if (!productoExistente || (productoExistente.cantidad < 4)) {
+                // Añadir el producto a la lista o incrementar la cantidad
+                if (productoExistente) {
+                    productoExistente.cantidad++;
+                } else {
+                    listaProductos.push({ ...producto, cantidad: 1 });
+                }
+                // Actualizar la visualización de la lista de productos seleccionados
+                mostrarListaProductos();
+            } else {
+                // Mostrar alerta si se supera el límite de 4 veces por producto
+                alert('¡Has alcanzado el límite de 4 veces para este producto!');
+            }
+        }
+
+            // Función para mostrar la lista de productos seleccionados
+            function mostrarListaProductos() {
+                const listaContainer = document.getElementById('lista-productos');
+                listaContainer.innerHTML = '';
+
+                listaProductos.forEach(producto => {
+                    const productoDiv = document.createElement('div');
+                    productoDiv.className = 'producto';
+                    productoDiv.innerHTML = `
+                        <h3>${producto.nombre}</h3>
+                        <p>Precio: $${producto.precio}</p>
+                        <p>Cantidad: ${producto.cantidad}</p>
+                    `;
+                    listaContainer.appendChild(productoDiv);
+                });
+            }
+
+        // Obtener la lista de productos mediante una solicitud AJAX
+        async function obtenerProductos() {
+            const response = await fetch('/api/resto/productos');
+            const productos = await response.json();
+
+            const container = document.getElementById('productos-container');
+
+            // Limpiar el contenedor antes de agregar los nuevos productos
+            container.innerHTML = '';
+
+            // Agregar cada producto al contenedor con un botón "+" para agregar
+            productos.forEach(producto => {
+                if(producto.disponible === 'true') {
+                    const productoDiv = document.createElement('div');
+                    productoDiv.className = 'producto';
+                    productoDiv.innerHTML = `
+                        <h3>${producto.nombre}</h3>
+                        <p>Precio: $${producto.precioUnidad}</p>
+                        <p>Categoría: ${producto.categoria}</p>
+                        <button onclick="agregarProducto({'id': '${producto._id}', 'nombre': '${producto.nombre}', 'precio': ${producto.precioUnidad}})">+</button>
+                    `;
+                    container.appendChild(productoDiv);
+                }
+            });
+        }
+
+        // Llamar a la función para obtener productos al cargar la página
+        obtenerProductos();
+    </script>
+
+    <div>
+        <h2>Lista de Productos Seleccionados</h2>
+        <div id="lista-productos"></div>
+    </div>
+    
+</body>
+</html>
