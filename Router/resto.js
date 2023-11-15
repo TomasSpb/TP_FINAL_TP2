@@ -15,11 +15,16 @@ class Router {
         this.router.put('/productos/:id', this.controladorP.actualizarProducto)
         this.router.delete('/productos/:id', this.controladorP.borrarProducto)
 
-        this.router.get('/productosP', (req, res) => {
+        this.router.get('/usuarios/:id?', this.controladorU.obtenerUsuarios)
+        this.router.post('/usuarios', this.controladorU.guardarUsuario)
+        this.router.put('/usuarios/:id', this.controladorU.actualizarUsuario)
+        this.router.delete('/usuarios/:id', this.controladorU.borrarUsuario)
+        
+        this.router.get('/guardarProductos', (req, res) => {
             res.sendFile('guardar.html', { root: 'public' });
         });
 
-        this.router.get('/register', (req, res) => {
+        this.router.get('/login', (req, res) => {
             res.sendFile('registrarUsuario.html', { root: 'public' });
         });
 
@@ -28,4 +33,3 @@ class Router {
 }
 
 export default Router
-
