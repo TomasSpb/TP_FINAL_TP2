@@ -7,11 +7,11 @@ class ModelMongoDB {
         if(!CnxMongoDB.connection) return id? {}:[]
         
         if(id) {
-            const Usuario = await CnxMongoDB.db.collection('Usuarios').findOne({_id: new ObjectId(id)})
+            const Usuario = await CnxMongoDB.db.collection('usuarios').findOne({_id: new ObjectId(id)})
             return Usuario
         }
         else {
-            const Usuarios = await CnxMongoDB.db.collection('Usuarios').find({}).toArray()
+            const Usuarios = await CnxMongoDB.db.collection('usuarios').find({}).toArray()
             return Usuarios
         }
         
@@ -20,7 +20,7 @@ class ModelMongoDB {
     guardarUsuario = async Usuario => {
         if(!CnxMongoDB.connection) return {}
         
-        await CnxMongoDB.db.collection('Usuarios').insertOne(Usuario)
+        await CnxMongoDB.db.collection('usuarios').insertOne(Usuario)
 
         return Usuario
     }
@@ -28,7 +28,7 @@ class ModelMongoDB {
     actualizarUsuario = async (id, Usuario) => {
         if(!CnxMongoDB.connection) return {}
         
-        await CnxMongoDB.db.collection('Usuarios').updateOne(
+        await CnxMongoDB.db.collection('usuarios').updateOne(
             { _id: new ObjectId(id) },
             { $set: Usuario }
         )
@@ -39,7 +39,7 @@ class ModelMongoDB {
     borrarUsuario = async id => {
         if(!CnxMongoDB.connection) return {}
         
-        await CnxMongoDB.db.collection('Usuarios').deleteOne( { _id: new ObjectId(id) } )
+        await CnxMongoDB.db.collection('usuarios').deleteOne( { _id: new ObjectId(id) } )
 
         return {}
     }
