@@ -14,6 +14,11 @@ class Router {
         this.router.put('/productos/:id', this.controlador.actualizarProducto)
         this.router.delete('/productos/:id', this.controlador.borrarProducto)
 
+        this.router.get('/usuarios/:id?', this.ControladorUsuarios.obtenerUsuarios)
+        this.router.post('/usuarios', this.ControladorUsuarios.guardarUsuario)
+        this.router.put('/usuarios/:id', this.ControladorUsuarios.actualizarUsuario)
+        this.router.delete('/usuarios/:id', this.ControladorUsuarios.borrarUsuario)
+        
         this.router.get('/productosP', (req, res) => {
             res.sendFile('guardar.html', { root: 'public' });
         });
