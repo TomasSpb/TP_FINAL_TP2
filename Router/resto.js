@@ -24,7 +24,7 @@ class Router {
             res.sendFile('guardar.html', { root: 'public' });
         });
 
-        this.router.get('/login', (req, res) => {
+        this.router.get('/register', (req, res) => {
             res.sendFile('registrarUsuario.html', { root: 'public' });
         });
 
