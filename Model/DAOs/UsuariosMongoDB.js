@@ -43,6 +43,29 @@ class ModelMongoDB {
 
         return {}
     }
+
+    login = async (email, pass) => {
+        if(!CnxMongoDB.connection) return {}
+        
+        const Usuario = await CnxMongoDB.db.collection('usuarios').findOne({
+            email: { $regex: new RegExp(email, 'i') },
+            password: pass})
+        if(Usuario) {
+            return Usuario
+        }
+        else {
+            throw new Error('no se pudo iniciar sesion')
+        }
+    }
+
+    verificarRegistro = async email => {
+        if(!CnxMongoDB.connection) return {}
+
+        const usuario = await CnxMongoDB.db.collection('usuarios').findOne({ email: { $regex: new RegExp(email, 'i') } })
+        if(usuario) {
+            throw new Error('El usuario ya existe')
+        }
+    }
 }
 
 export default ModelMongoDB

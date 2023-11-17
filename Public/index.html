@@ -10,7 +10,15 @@
 </head>
 <body>
     <div>
-        <a href="api/resto/productosP"><button>Ir a la página de carga de productos</button></a>
+        <a href="api/resto/register"> <button> registrar usuario</button></a>
+    </div>
+
+    <div>
+        <a href="api/resto/login"> <button> Login </button></a>
+    </div>
+    
+    <div>
+        <a href="api/resto/guardarProductos"><button>Ir a la página de carga de productos</button></a>
     </div>
 
     <div class="container" id="productos-container">
@@ -18,8 +26,22 @@
     </div>
 
     <script>
+        //-------------------------------------------------------------
+        //document.addEventListener('DOMContentLoaded', function () {
+        //    const token = localStorage.getItem('token');
+        //
+        //    // Si no hay token, redirige a la página de login
+        //    if (!token) {
+        //      window.location.href = 'api/resto/login';
+        //    }
+        //});
+        //-------------------------------------------------------------
+        document.addEventListener('mousemove', reiniciarTemporizador)
+        document.addEventListener('keydown', reiniciarTemporizador)
+
         // Lista de productos seleccionados
         const listaProductos = [];
+        let timeoutId
 
         // Función para agregar un producto a la lista
         function agregarProducto(producto) {
@@ -40,22 +62,22 @@
             }
         }
 
-            // Función para mostrar la lista de productos seleccionados
-            function mostrarListaProductos() {
-                const listaContainer = document.getElementById('lista-productos');
-                listaContainer.innerHTML = '';
+        // Función para mostrar la lista de productos seleccionados
+        function mostrarListaProductos() {
+            const listaContainer = document.getElementById('lista-productos');
+            listaContainer.innerHTML = '';
 
-                listaProductos.forEach(producto => {
-                    const productoDiv = document.createElement('div');
-                    productoDiv.className = 'producto';
-                    productoDiv.innerHTML = `
-                        <h3>${producto.nombre}</h3>
-                        <p>Precio: $${producto.precio}</p>
-                        <p>Cantidad: ${producto.cantidad}</p>
-                    `;
-                    listaContainer.appendChild(productoDiv);
-                });
-            }
+            listaProductos.forEach(producto => {
+                const productoDiv = document.createElement('div');
+                productoDiv.className = 'producto';
+                productoDiv.innerHTML = `
+                    <h3>${producto.nombre}</h3>
+                    <p>Precio: $${producto.precio}</p>
+                    <p>Cantidad: ${producto.cantidad}</p>
+                `;
+                listaContainer.appendChild(productoDiv);
+            });
+        }
 
         // Obtener la lista de productos mediante una solicitud AJAX
         async function obtenerProductos() {
@@ -69,7 +91,7 @@
 
             // Agregar cada producto al contenedor con un botón "+" para agregar
             productos.forEach(producto => {
-                if(producto.disponible === 'true') {
+                if(producto.disponible.toString() === 'true') {
                     const productoDiv = document.createElement('div');
                     productoDiv.className = 'producto';
                     productoDiv.innerHTML = `
@@ -83,8 +105,50 @@
             });
         }
 
-        // Llamar a la función para obtener productos al cargar la página
+        async function obtenerUsuario() {
+            const url = '/api/resto/usuarios/' + localStorage.getItem('token')
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                        'Content-Type': 'application/json'
+                }
+            });
+
+            const data = await response.json()
+
+            if (!response.ok) {
+                console.error(data.message)
+                alert(data.message)
+            } else {
+                usuario = data
+                return data
+            }
+        }
+
+        obtenerUsuario();
         obtenerProductos();
+        iniciarTemporizador();
+
+        function iniciarTemporizador() {
+            timeoutId = setTimeout(function() {
+                localStorage.removeItem('token');
+            }, 300000); 
+        }
+
+        function reiniciarTemporizador() {
+            clearTimeout(timeoutId);
+            iniciarTemporizador();
+        }
+
+        async function verificarToken() {
+            const token = localStorage.getItem('token')
+        
+            // Si no hay token, redirige a la página de login
+            if (!token) {
+                alert('Para finalizar un pedido, debe esta logueado')
+                window.location.href = 'api/resto/login'
+            }
+        }
     </script>
 
     <div>
@@ -92,5 +156,6 @@
         <div id="lista-productos"></div>
     </div>
     
+    <button id="CheckTokenButton" onclick="verificarToken()">Finalizar Pedido</button>
 </body>
 </html>

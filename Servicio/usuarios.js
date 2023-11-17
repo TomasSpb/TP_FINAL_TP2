@@ -24,6 +24,24 @@ class Servicio {
         const usuarioBorrado = await this.model.borrarUsuario(id)
         return usuarioBorrado
     }
+
+    login = async (email, pass) => {
+        try {
+            const usuario = await this.model.login(email, pass)
+            return usuario._id
+            //return usuario
+        } catch (error) {
+            throw error
+        } 
+    } 
+
+    validarRegistro = async (email) => {
+        try {
+            await this.model.verificarRegistro(email)
+        } catch (error) {
+            throw error
+        } 
+    } 
 }
 
 export default Servicio

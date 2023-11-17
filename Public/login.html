@@ -7,16 +7,75 @@
     <link rel="stylesheet" href="./estilos/styleLogin.css">
 </head>
 <body>
-
-    <form action="#" method="post">
-        <label for="username">Usuario:</label>
-        <input type="text" id="username" name="username" required>
+    <form id="loginForm" action="/api/resto/login" method="post">
+        <label for="email">Email:</label>
+        <input type="text" id="email" name="email" required>
 
         <label for="password">Contraseña:</label>
         <input type="password" id="password" name="password" required>
 
-        <a href="index.html"><button type="submit">Iniciar sesión</button></a>
+        <button type="submit">Iniciar sesión</button>
     </form>
 
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async function(event) {
+            event.preventDefault()
+
+            const email = document.getElementById('email').value
+            const password = document.getElementById('password').value
+
+            try {
+                const token = await validarUsuario(email, password)
+                
+                if(token) {
+                    localStorage.setItem('token', token)
+                    window.location.href = '/'
+                }
+            } catch (error) {
+                alert(error.message)
+            }
+        });
+
+        document.addEventListener('mousemove', reiniciarTemporizador)
+        document.addEventListener('keydown', reiniciarTemporizador)
+
+        let timeoutId;
+
+        function iniciarTemporizador() {
+            timeoutId = setTimeout(function() {
+                localStorage.removeItem('token');
+            }, 300000); 
+        }
+
+        function reiniciarTemporizador() {
+            clearTimeout(timeoutId);
+            iniciarTemporizador();
+        }
+
+        async function validarUsuario(email, password) {
+                try {
+                const response = await fetch('/api/resto/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json()
+
+                if (!response.ok) {
+                    console.error(data.message)
+                    alert(data.message)
+                } else {
+                    return data
+                }
+                } catch (error) {
+                    console.error('Error de red:', error)
+                }
+            }
+
+        iniciarTemporizador();
+    </script>
 </body>
 </html>
