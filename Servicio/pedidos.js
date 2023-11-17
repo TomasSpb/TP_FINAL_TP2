@@ -19,7 +19,7 @@ class Servicio {
                 nombreUsuario: usuario.username,
                 direccion: usuario.direccion,
                 productos: productos.map(producto => producto.id),
-                precioTotal: precXioTotal
+                precioTotal: precioTotal
             }
         
             const pedidoGuardado = await this.model.guardarPedido(nuevoPedido)
