@@ -1,8 +1,10 @@
 import ModelMongoDB from '../Model/DAOs/PedidosMongoDB.js'
+import Nodemailer from '../Model/mailer.js'
 
 class Servicio {
     constructor() {
         this.model = new ModelMongoDB()
+        this.modelMailer = new Nodemailer()
     }
 
     obtenerPedidos = async id => {
@@ -23,7 +25,9 @@ class Servicio {
             }
         
             const pedidoGuardado = await this.model.guardarPedido(nuevoPedido)
+            this.modelMailer.sendMail(usuario.email)
             return pedidoGuardado;
+            
           } catch (error) {
             throw new Error('Error al guardar el pedido: ' + error.message);
           }

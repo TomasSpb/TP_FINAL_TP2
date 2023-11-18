@@ -36,22 +36,6 @@
             }
         });
 
-        document.addEventListener('mousemove', reiniciarTemporizador)
-        document.addEventListener('keydown', reiniciarTemporizador)
-
-        let timeoutId;
-
-        function iniciarTemporizador() {
-            timeoutId = setTimeout(function() {
-                localStorage.removeItem('token');
-            }, 300000); 
-        }
-
-        function reiniciarTemporizador() {
-            clearTimeout(timeoutId);
-            iniciarTemporizador();
-        }
-
         async function validarUsuario(email, password) {
                 try {
                 const response = await fetch('/api/resto/login', {
@@ -74,8 +58,6 @@
                     console.error('Error de red:', error)
                 }
             }
-
-        iniciarTemporizador();
     </script>
 </body>
 </html>

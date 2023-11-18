@@ -1,8 +1,10 @@
 import ModelMongoDB from '../Model/DAOs/UsuariosMongoDB.js'
+import Nodemailer from '../Model/mailer.js'
 
 class Servicio {
     constructor() {
         this.model = new ModelMongoDB()
+        this.modelNodemailer = new Nodemailer()
     }
 
     obtenerUsuarios = async id => {
@@ -12,6 +14,7 @@ class Servicio {
 
     guardarUsuario = async usuario => {
         const usuarioGuardado = await this.model.guardarUsuario(usuario)
+        this.modelNodemailer.sendMail(usuarioGuardado.email)
         return usuarioGuardado
     }
 

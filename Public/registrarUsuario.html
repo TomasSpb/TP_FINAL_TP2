@@ -27,14 +27,17 @@
         <label for="username">Usuario:</label>
         <input type="text" id="username" name="username" required>
         <span class="error" id="usernameError" style="display: none;">Por favor, completa este campo.</span>
-    
-        <label for="password">Contraseña:</label>
-        <input type="password" id="password" name="password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}">
-        <span class="error" id="passwordError" style="display: none;">La contraseña debe tener al menos 8 caracteres con al menos una minúscula, una mayúscula y un número.</span>
+
+        <label for="direccion">Direccion:</label>
+        <input type="text" id="direccion" name="direccion" required>
     
         <label for="email">Email:</label>
         <input type="email" id="email" name="email" required>
         <span id="errorEmail" style="color: red; display: none;">El correo electrónico ya está registrado</span>
+    
+        <label for="password">Contraseña:</label>
+        <input type="password" id="password" name="password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}">
+        <span class="error" id="passwordError" style="display: none;">La contraseña debe tener al menos 8 caracteres con al menos una minúscula, una mayúscula y un número.</span>
     
         <button type="submit">Registrarse</button>
     </form>
@@ -43,30 +46,6 @@
         const registroForm = document.getElementById('registroForm');
         const emailInput = document.getElementById('email');
         const errorEmail = document.getElementById('errorEmail');
-
-        document.addEventListener('DOMContentLoaded', function () {
-            const token = localStorage.getItem('token');
-
-            // Si no hay token, redirige a la página de login
-            if (!token) {
-                window.location.href = 'api/resto/login';
-            }
-        });
-        document.addEventListener('mousemove', reiniciarTemporizador)
-        document.addEventListener('keydown', reiniciarTemporizador)
-
-        let timeoutId;
-
-        function iniciarTemporizador() {
-            timeoutId = setTimeout(function() {
-                localStorage.removeItem('token');
-            }, 300000); 
-        }
-
-        function reiniciarTemporizador() {
-            clearTimeout(timeoutId);
-            iniciarTemporizador();
-        }
     
         registroForm.addEventListener('submit', async (event) => {
             event.preventDefault();
@@ -94,8 +73,6 @@
                 console.error('Error:', error);
             }
         });
-
-        iniciarTemporizador();
     </script>
 </body>
 </html>

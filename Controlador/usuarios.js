@@ -16,7 +16,7 @@ class Controlador {
         const usuario = req.body
         const usuarioGuardado = await this.servicio.guardarUsuario(usuario)
         if(usuarioGuardado) {
-            res.redirect('api/resto/login')
+            res.redirect('login')
         }
         //res.json(usuarioGuardado)
     }

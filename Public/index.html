@@ -125,7 +125,6 @@
             }
         }
 
-        obtenerUsuario();
         obtenerProductos();
         iniciarTemporizador();
 
@@ -147,6 +146,8 @@
             if (!token) {
                 alert('Para finalizar un pedido, debe esta logueado')
                 window.location.href = 'api/resto/login'
+            } else {
+                obtenerUsuario();
             }
         }
     </script>
