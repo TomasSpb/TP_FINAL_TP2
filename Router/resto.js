@@ -38,6 +38,7 @@ class Router {
         this.router.post('/validarRegistro', this.controladorU.validarRegistro)
         
         this.router.post('/guardarPedido', this.controladorPe.guardarPedidos)
+        this.router.get('/verPedidos/:id?', this.controladorPe.obtenerPedidos)
 
         return this.router
     }

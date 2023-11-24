@@ -21,7 +21,12 @@ class ModelMongoDB {
         if(!CnxMongoDB.connection) return {}
         
         await CnxMongoDB.db.collection('pedidos').insertOne(pedido)
-        return pedido
+        if(!pedido) {
+            throw new Error('Error al guardar pedido.')
+        }
+        else {
+            return pedido
+        }
     }
 }
 

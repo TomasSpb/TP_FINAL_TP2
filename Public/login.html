@@ -38,22 +38,22 @@
 
         async function validarUsuario(email, password) {
                 try {
-                const response = await fetch('/api/resto/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ email, password })
-                });
+                    const response = await fetch('/api/resto/login', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ email, password })
+                    });
 
-                const data = await response.json()
+                    const data = await response.json()
 
-                if (!response.ok) {
-                    console.error(data.message)
-                    alert(data.message)
-                } else {
-                    return data
-                }
+                    if (!response.ok) {
+                        console.error(data.message)
+                        alert(data.message)
+                    } else {
+                        return data
+                    }
                 } catch (error) {
                     console.error('Error de red:', error)
                 }

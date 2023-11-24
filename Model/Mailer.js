@@ -12,13 +12,13 @@ class Nodemailer{
         }
     });
 
-    sendMail = async email => {
+    sendMail = async (email, html, subject) => {
         try {
             const info = await this.transporter.sendMail({
                 from: '"ApiResto" <tomas.spabentti@gmail.com>', // sender address
                 to: email, // list of receivers
-                subject: "prueba ✔", // Subject line
-                html: "<b>prueba</b>", // html body
+                subject: subject, // Subject line
+                html: await html, // html body
             });
 
             console.log("Message sent: %s", info.messageId);

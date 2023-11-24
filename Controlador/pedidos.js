@@ -14,8 +14,13 @@ class Controlador {
 
     guardarPedidos = async (req,res) => {
         const { listaProductos, usuario } = req.body
-        const pedidoGuardado = await this.servicio.guardarPedidos(listaProductos, usuario)
-        res.json(pedidoGuardado)
+
+        try {
+            const pedidoGuardado = await this.servicio.guardarPedidos(listaProductos, usuario)
+            res.status(200).json(pedidoGuardado)
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
     }
 }
 

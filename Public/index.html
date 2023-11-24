@@ -147,9 +147,29 @@
                 alert('Para finalizar un pedido, debe esta logueado')
                 window.location.href = 'api/resto/login'
             } else {
-                obtenerUsuario();
+                usuario = await obtenerUsuario();
+                try {
+                    fetch('/api/resto/guardarPedido', {
+                    method: 'POST',
+                    headers: {
+                    'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({listaProductos, usuario})
+                    })
+                    
+                    const data = await response.json()
+
+                    if (!response.ok) {
+                        console.error(data.message)
+                        alert(data.message)
+                    } else {
+                        return data
+                    }
+                } catch (error) {
+                    console.log(error.message)
+                }
             }
-        }
+        } 
     </script>
 
     <div>

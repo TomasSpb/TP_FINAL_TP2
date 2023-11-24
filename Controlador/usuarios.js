@@ -52,7 +52,7 @@ class Controlador {
 
         try {
             await this.servicio.validarRegistro(email)
-            res.status(200).json({mensaje: 'OK'})
+            res.status(200).json({mensaje: 'El usuario no esta registrado'})
         } catch (error) {
             res.status(401).json({ message: error.message });
         }
